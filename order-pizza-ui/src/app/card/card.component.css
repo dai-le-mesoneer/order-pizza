@@ -1,0 +1,13 @@
+.app-card {
+  width: 300px;
+}
+
+.card-image {
+  width: 100%;
+  object-fit: cover;
+  height: 200px;
+}
+
+.card-footer {
+  padding: 12px;
+}

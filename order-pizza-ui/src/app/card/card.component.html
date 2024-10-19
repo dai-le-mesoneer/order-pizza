@@ -1,0 +1,13 @@
+<mat-card class="app-card" appearance="outlined">
+  <img class="card-image" mat-card-image src="{{product.image}}" alt="{{product.name}}">
+  <mat-card-footer class="card-footer">
+    <mat-card-title>{{product.name}}</mat-card-title>
+    <p>{{product.price}} VND</p>
+    <div>
+      <button (click)="decrement()" class="button-down">-</button>
+      {{ productRequest.quantity}}
+      <button (click)="increment()" class="button-up">+</button>
+    </div>
+
+  </mat-card-footer>
+</mat-card>

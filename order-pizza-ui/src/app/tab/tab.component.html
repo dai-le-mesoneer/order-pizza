@@ -1,0 +1,35 @@
+<h1 class="header-title">{{headerTitle}}</h1>
+<mat-tab-group class="tab-groups">
+  <mat-tab label="(1) Choose Pizza">
+    <div class="tab-content">
+      <app-card
+        *ngFor="let product of pizzas"
+        class="product-card"
+        [product]="product" [productRequest]="createDefaultProductRequest(product)">
+      </app-card>
+    </div>
+  </mat-tab>
+  <mat-tab label="(2) Choose Drinks">
+    <div class="tab-content">
+      <app-card
+        *ngFor="let product of drinks"
+        class="product-card" [product]="product"
+        [productRequest]="createDefaultProductRequest(product)">
+      </app-card>
+    </div>
+  </mat-tab>
+  <mat-tab label="(3) Pay & Delivery">
+    <table>
+      <tr>
+        <th>Items</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+      <tr *ngFor="let p of getAllProductSelected()">
+        <td>{{getProductFromProductId(p.id).name}}</td>
+        <td>{{p.quantity}}</td>
+        <td>{{getProductFromProductId(p.id).price * p.quantity}}</td>
+      </tr>
+    </table>
+  </mat-tab>
+</mat-tab-group>

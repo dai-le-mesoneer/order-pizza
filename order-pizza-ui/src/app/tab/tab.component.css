@@ -1,0 +1,38 @@
+.header-title {
+  text-align: center;
+  margin: 20px;
+  width: 100%;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.tab-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.product-card {
+  margin: 10px 0;
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #e8e9eb;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.tab-groups {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}

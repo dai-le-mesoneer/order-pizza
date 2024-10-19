@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: order-pizza-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/OrderPizza
+    username: postgres
+    password: 123456
+    hikari:
+      schema: orderpizza
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: orderpizza
+    show-sql: true
+    open-in-view: true
+  flyway:
+    enabled: false
+logging:
+  level:
+    root: info

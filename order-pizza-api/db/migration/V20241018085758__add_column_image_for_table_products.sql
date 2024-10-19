@@ -1,0 +1,1 @@
+alter table products add column image varchar(511) not null;
