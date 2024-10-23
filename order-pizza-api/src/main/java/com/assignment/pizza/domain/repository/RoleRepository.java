@@ -1,0 +1,17 @@
+package com.assignment.pizza.domain.repository;
+
+import com.assignment.pizza.domain.entity.RoleEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+/**
+ * @author dai.le
+ * @since 23/10/2024
+ */
+
+@Repository
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+    Optional<RoleEntity> findByRole(String role);
+}

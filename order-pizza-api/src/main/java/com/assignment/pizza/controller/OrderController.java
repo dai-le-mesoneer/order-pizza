@@ -11,6 +11,7 @@ import com.assignment.pizza.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("orders")
-@CrossOrigin("http://localhost:4200")
 @Tag(name = "Order APIs")
 public class OrderController {
     private final OrderService orderService;
@@ -35,11 +35,15 @@ public class OrderController {
 
     @GetMapping
     @Operation(description = "List order", summary = "List order API")
+    @Secured(value = {
+            "CHEF", "RECEPTIONIST", "DELIVERY"
+    })
     public ResponseDTO<ListDTO<OrderDTO>> listOrders(@ModelAttribute ListOrderRequest request) {
         return orderService.listOrders(request);
     }
 
     @PutMapping("{id}")
+    @Operation(description = "Update order status", summary = "Update order status")
     public ResponseDTO<IdDTO> updateOrderStatus(
             @PathVariable("id") Long orderId,
             @RequestBody UpdateOrderStatusRequest request) {

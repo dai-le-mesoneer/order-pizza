@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseDTO<IdDTO> createOrder(CreateOrderRequest createOrderRequest) {
         var listError = orderValidator.validateCreateOrderRequest(createOrderRequest);
 
-        if (CollectionUtils.isEmpty(listError)) {
+        if (!CollectionUtils.isEmpty(listError)) {
             return ResponseDTO.<IdDTO>newBuilder()
                     .setSuccess(false)
                     .setCode(ErrorCode.BAD_REQUEST)
