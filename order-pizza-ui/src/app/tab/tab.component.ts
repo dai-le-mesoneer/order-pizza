@@ -1,11 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {MatTabsModule} from '@angular/material/tabs';
-import {NgFor} from '@angular/common';
+import {NgFor, NgIf} from '@angular/common';
 import {CardComponent} from '../card/card.component';
 import {Product} from '../card/product';
 import {ProductService} from '../product.service';
 import {OrderRequest} from '../card/order.request';
 import {ProductRequest} from '../card/product.request';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatFormField} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {OrderService} from '../order.service';
 
 @Component({
   selector: 'app-tab',
@@ -13,17 +18,36 @@ import {ProductRequest} from '../card/product.request';
   imports: [
     MatTabsModule,
     NgFor,
-    CardComponent
+    CardComponent,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInputModule,
+    MatButton,
+    NgIf
   ],
   templateUrl: './tab.component.html',
   styleUrl: './tab.component.css'
 })
 export class TabComponent implements OnInit {
+  informationForm = new FormGroup({
+    customerName: new FormControl('', Validators.required),
+    phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[- +()0-9]+$')]),
+    address: new FormControl('', Validators.required),
+    products: new FormControl(''),
+  });
   data!: Product[];
   pizzas!: Product[];
   drinks!: Product[];
   request!: OrderRequest;
-  constructor(private productService: ProductService) {}
+  selectedTabIndex = 0;
+  nameError = signal('');
+  phoneError = signal('');
+  addressError = signal('');
+
+  constructor(
+    private productService: ProductService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -36,12 +60,7 @@ export class TabComponent implements OnInit {
           this.data = res.data.items
           this.pizzas = this.data.filter(p => p.type === 'PIZZA');
           this.drinks = this.data.filter(p => p.type === 'DRINK');
-          this.request = {
-            address: '',
-            customerName: '',
-            phone: '',
-            products : this.data.map(i => this.map(i))
-          }
+          this.request = this.createDefaultOrder()
         }
       }
     )
@@ -64,6 +83,68 @@ export class TabComponent implements OnInit {
 
   getProductFromProductId(productId: number): Product {
     return this.data.filter(p => p.id === productId)[0];
+  }
+
+  onSubmit(){
+      this.request.customerName = this.informationForm.controls.customerName.value || '';
+      this.request.address = this.informationForm.controls.address.value || '';
+      this.request.phone = this.informationForm.controls.phoneNumber.value || '';
+      this.request.products = this.getAllProductSelected();
+      this.orderService.createOrder(this.request).subscribe(
+        res => {
+          if (res.success) {
+            this.request = this.createDefaultOrder()
+            this.resetForm()
+            alert("Create order successfully");
+          } else {
+            alert("Failed to create order");
+          }
+        }
+      );
+  }
+
+  validateName() {
+    if (this.informationForm.controls.customerName.hasError('required')) {
+      this.nameError.set('You must enter name')
+    } else {
+      this.nameError.set('')
+    }
+  }
+
+  validatePhoneNumber() {
+    if (this.informationForm.controls.phoneNumber.hasError('required')) {
+      this.phoneError.set('You must enter phone number')
+    } else if (this.informationForm.controls.phoneNumber.hasError('pattern')) {
+      this.phoneError.set('Your phone number invalid')
+    } else {
+      this.phoneError.set('')
+    }
+  }
+
+  validateAddress() {
+    if (this.informationForm.controls.address.hasError('required')) {
+      this.addressError.set('You must enter address')
+    } else {
+      this.addressError.set('')
+    }
+  }
+
+  private createDefaultOrder(): OrderRequest {
+    return {
+      address: '',
+      customerName: '',
+      phone: '',
+      products : this.data.map(i => this.map(i))
+    }
+
+  }
+
+  private resetForm(): void {
+    this.informationForm.reset();
+    Object.keys(this.informationForm.controls).forEach(key => {
+      this.informationForm.get(key)?.setErrors(null) ;
+    });
+    this.selectedTabIndex = 0
   }
 
   headerTitle = 'Le Pizza Store';

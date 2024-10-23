@@ -10,9 +10,9 @@ import {Product} from './card/product';
 })
 export class ProductService {
 
-  private apiUrl = 'http://localhost:8080/products';
+    private apiUrl = 'http://localhost:8080/products';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
   listProduct(): Observable<ResponseDTO<List<Product>>> {
     return this.http.get<ResponseDTO<List<Product>>>(this.apiUrl);

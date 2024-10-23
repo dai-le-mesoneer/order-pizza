@@ -34,9 +34,6 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "status")
     private Integer status;
 
-    @Column(name = "price")
-    private Long price;
-
     @Column(name = "created_date")
     private Timestamp createdDate;
 

@@ -1,0 +1,43 @@
+<h1 class="header-title">{{headerTitle}}</h1>
+<div class="login-component">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    @if (showError()) {
+      <div class="error-message"><mat-error>Your username or password incorrect!</mat-error></div>
+    }
+    <div class="login-form-item">
+      <mat-form-field class="login-form-field">
+        <mat-label>Enter your username</mat-label>
+        <input
+          matInput
+          formControlName="username"
+          required
+          on-focus="handleFocus()"
+        />
+      </mat-form-field>
+    </div>
+    <div class="login-form-item">
+      <mat-form-field class="login-form-field">
+        <mat-label>Enter your password</mat-label>
+        <input
+          matInput
+          [type]="hide() ? 'password' : 'text'"
+          formControlName="password"
+          required
+          on-focus="handleFocus()"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="clickEvent($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide()"
+        >
+          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div class="login-form-item login-form-action">
+      <button type="submit" mat-flat-button disabled="{{loginForm.invalid}}">Login</button>
+    </div>
+  </form>
+</div>

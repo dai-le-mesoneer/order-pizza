@@ -1,5 +1,5 @@
 <h1 class="header-title">{{headerTitle}}</h1>
-<mat-tab-group class="tab-groups">
+<mat-tab-group class="tab-groups" [(selectedIndex)]="selectedTabIndex">
   <mat-tab label="(1) Choose Pizza">
     <div class="tab-content">
       <app-card
@@ -19,17 +19,78 @@
     </div>
   </mat-tab>
   <mat-tab label="(3) Pay & Delivery">
-    <table>
-      <tr>
-        <th>Items</th>
-        <th>Quantity</th>
-        <th>Price</th>
-      </tr>
-      <tr *ngFor="let p of getAllProductSelected()">
-        <td>{{getProductFromProductId(p.id).name}}</td>
-        <td>{{p.quantity}}</td>
-        <td>{{getProductFromProductId(p.id).price * p.quantity}}</td>
-      </tr>
-    </table>
+    <div class="order-info">
+      <form [formGroup]="informationForm" (ngSubmit)="onSubmit()">
+        <div class="order-form">
+          <div class="form-item">
+            <label for='customer-name' class="form-label">Name:</label>
+            <mat-form-field class="form-input">
+              <mat-label>Name: </mat-label>
+              <input
+                id="customer-name"
+                matInput
+                formControlName="customerName"
+                (blur)="validateName()"
+                required
+              >
+              @if (informationForm.controls.customerName.invalid) {
+                <mat-error>{{nameError()}}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="form-item">
+            <label for='phone-number' class="form-label">Phone number:</label>
+            <mat-form-field class="form-input">
+              <mat-label>Phone number: </mat-label>
+              <input
+                id="phone-number"
+                matInput
+                formControlName="phoneNumber"
+                (blur)="validatePhoneNumber()"
+                required
+              >
+              @if (informationForm.controls.phoneNumber.invalid) {
+                <mat-error>{{phoneError()}}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="form-item">
+            <label for='address' class="form-label">Delivery to:</label>
+            <mat-form-field class="form-input">
+              <mat-label>Address: </mat-label>
+              <input
+                id="address"
+                matInput
+                formControlName="address"
+                (blur)="validateAddress()"
+                required
+              >
+              @if (informationForm.controls.address.invalid) {
+                <mat-error>{{addressError()}}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <label>Order details</label>
+        <table title="Items" class="order-items">
+          <tr>
+            <th>Items</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          <tr *ngFor="let p of getAllProductSelected()">
+            <td>{{getProductFromProductId(p.id).name}}</td>
+            <td>{{p.quantity}}</td>
+            <td>{{getProductFromProductId(p.id).price * p.quantity}} VND</td>
+          </tr>
+          <tr *ngIf="getAllProductSelected().length === 0">
+            <mat-error>You must choose at least 1 product!</mat-error>
+          </tr>
+        </table>
+        <div class="form-action">
+          <button type="submit" mat-flat-button disabled="{{informationForm.invalid || getAllProductSelected().length == 0}}">Order Now</button>
+        </div>
+      </form>
+    </div>
   </mat-tab>
 </mat-tab-group>
