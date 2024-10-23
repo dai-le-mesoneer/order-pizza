@@ -3,14 +3,14 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {NgFor, NgIf} from '@angular/common';
 import {CardComponent} from '../card/card.component';
 import {Product} from '../card/product';
-import {ProductService} from '../product.service';
+import {ProductService} from '../services/product.service';
 import {OrderRequest} from '../card/order.request';
 import {ProductRequest} from '../card/product.request';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
-import {OrderService} from '../order.service';
+import {OrderService} from '../services/order.service';
 
 @Component({
   selector: 'app-tab',
@@ -146,6 +146,4 @@ export class TabComponent implements OnInit {
     });
     this.selectedTabIndex = 0
   }
-
-  headerTitle = 'Le Pizza Store';
 }

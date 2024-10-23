@@ -1,5 +1,5 @@
 import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
-import {AuthorizationService} from './authorization.service';
+import {AuthorizationService} from '../services/authorization.service';
 
 @Directive({
   selector: '[authorization]',

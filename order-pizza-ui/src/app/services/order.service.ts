@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {OrderRequest} from './card/order.request';
+import {OrderRequest} from '../card/order.request';
 import {Observable} from 'rxjs';
-import {ResponseDTO} from './response/response';
-import {IDResponse} from './response/id.response';
-import {List} from './response/list';
-import {OrderDTO} from './response/order.response';
-import {ListOrdersRequest} from './request/list-orders.request';
-import {OrderStatus} from './enums/order-status.enum';
+import {ResponseDTO} from '../response/response';
+import {IDResponse} from '../response/id.response';
+import {List} from '../response/list';
+import {OrderDTO} from '../response/order.response';
+import {ListOrdersRequest} from '../request/list-orders.request';
 
 @Injectable({
   providedIn: 'root'

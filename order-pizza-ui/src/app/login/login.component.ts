@@ -5,7 +5,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {LoginRequest} from '../request/login.request';
-import {AuthenticationService} from '../authentication.service';
+import {AuthenticationService} from '../services/authentication.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -23,12 +23,12 @@ import {Router} from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit{
-  headerTitle = 'Le Pizza Store';
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   })
   showError = signal(false)
+  hide = signal(true);
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit{
   ) {
   }
 
-  hide = signal(true);
+
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
@@ -50,12 +50,20 @@ export class LoginComponent implements OnInit{
 
     this.authenticationService.login(request).subscribe(
       result => {
+        console.log(result);
         if (result.success && result.data) {
-          localStorage.setItem('currentUser', JSON.stringify(result.data));
+          localStorage.setItem('current_user', JSON.stringify(result.data));
+          localStorage.setItem('access_token', result.data.accessToken)
+          localStorage.setItem('role', result.data.role)
           this.router.navigate(['orders']).then(_ => {});
-        } else {
+        }
+      },
+      error => {
+        if (error.status === 401) {
           this.showError.set(true)
           this.loginForm.reset();
+        } else {
+          console.error('An unexpected error occurred.');
         }
       }
     )

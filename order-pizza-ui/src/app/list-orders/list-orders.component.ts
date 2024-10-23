@@ -11,11 +11,13 @@ import {
 import {MatButton} from '@angular/material/button';
 import {OrderDTO} from '../response/order.response';
 import {NgForOf} from '@angular/common';
-import {OrderService} from '../order.service';
-import {AuthorizationDirective} from '../authorization.directive';
-import {AuthorizationService} from '../authorization.service';
+import {OrderService} from '../services/order.service';
+import {AuthorizationDirective} from '../directives/authorization.directive';
+import {AuthorizationService} from '../services/authorization.service';
 import {ListOrdersRequest} from '../request/list-orders.request';
 import {OrderStatus} from '../enums/order-status.enum';
+import {Role} from '../enums/role.enum';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-list-orders',
@@ -45,6 +47,7 @@ export class ListOrdersComponent implements OnInit{
   constructor(
     private orderService: OrderService,
     private authorizationService: AuthorizationService,
+    private router: Router,
   ) { }
 
   confirm(element: OrderDTO) {
@@ -68,6 +71,9 @@ export class ListOrdersComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    if (!this.authorizationService.isAuthenticated()) {
+      this.router.navigate(['access-denied']).then(_ => {})
+    }
     this.loadOrder()
   }
 
@@ -115,4 +121,6 @@ export class ListOrdersComponent implements OnInit{
       }
     )
   }
+
+  protected readonly Role = Role;
 }

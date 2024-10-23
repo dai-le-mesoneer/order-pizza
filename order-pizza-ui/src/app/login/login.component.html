@@ -1,6 +1,5 @@
-<h1 class="header-title">{{headerTitle}}</h1>
 <div class="login-component">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (keydown.enter)="onSubmit()">
     @if (showError()) {
       <div class="error-message"><mat-error>Your username or password incorrect!</mat-error></div>
     }
@@ -37,7 +36,7 @@
       </mat-form-field>
     </div>
     <div class="login-form-item login-form-action">
-      <button type="submit" mat-flat-button disabled="{{loginForm.invalid}}">Login</button>
+      <button type="submit" (click)="onSubmit()" mat-flat-button disabled="{{loginForm.invalid}}">Login</button>
     </div>
   </form>
 </div>

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ResponseDTO} from './response/response';
-import {List} from './response/list';
-import {Product} from './card/product';
+import {ResponseDTO} from '../response/response';
+import {List} from '../response/list';
+import {Product} from '../card/product';
 
 @Injectable({
   providedIn: 'root'
