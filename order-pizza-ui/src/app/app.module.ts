@@ -8,6 +8,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouterOutlet} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LoginComponent} from './login/login.component';
+import {AuthorizationDirective} from './authorization.directive';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +20,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserModule,
     RouterOutlet,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AuthorizationDirective
   ],
   providers: [
     provideHttpClient()

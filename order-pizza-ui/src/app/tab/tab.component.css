@@ -36,3 +36,35 @@ td, th {
   border: 1px solid #dddddd;
   border-radius: 4px;
 }
+
+.form-label {
+  width: 120px;
+  display: inline-block;
+}
+
+.form-input {
+  min-width: 400px
+}
+
+.order-info {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.order-form {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.order-items {
+  width: 600px;
+  margin-top: 8px;
+}
+
+.form-action {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}

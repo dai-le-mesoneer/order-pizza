@@ -1,0 +1,30 @@
+.header-title {
+  text-align: center;
+  margin: 20px;
+  width: 100%;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.login-component {
+  margin-top: 100px;
+}
+
+.login-form-item {
+  margin: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-form-field {
+  width: 300px;
+}
+
+.login-form-action {
+  display: flex;
+  justify-content: center;
+}
+
+.error-message {
+  display: flex;
+  justify-content: center;
+}
