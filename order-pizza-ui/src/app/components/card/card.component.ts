@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {Product} from './product';
+import {Product} from '../../request/product';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {NgOptimizedImage} from '@angular/common';
-import {ProductRequest} from './product.request';
+import {ProductRequest} from '../../request/product.request';
 
 @Component({
   selector: 'app-card',

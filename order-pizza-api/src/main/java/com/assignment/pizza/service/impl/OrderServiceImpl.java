@@ -105,6 +105,7 @@ public class OrderServiceImpl implements OrderService {
         var order = orderRepository.findById(orderId).orElseThrow(() ->
                 new IllegalStateException("Object not found with id " + orderId));
 
+        // TODO: update status following principal role - use PrincipalUtils.getPrincipal();
         order.setStatus(request.getStatus());
         orderRepository.save(order);
 

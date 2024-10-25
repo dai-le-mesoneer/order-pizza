@@ -25,7 +25,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         // handler exception
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        log.info("access denied custom");
         var responseObj = ResponseDTO.newBuilder()
                 .setSuccess(false)
                 .setMessage("Bad request")
