@@ -57,10 +57,11 @@ public class SecurityConfig{
                                         "/products",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/anonymous/**").permitAll()
+                                        "/v3/api-docs.yaml",
+                                        "/anonymous/**",
+                                        "/public/**").permitAll()
                                 .requestMatchers(
                                         HttpMethod.POST,
-                                        "/orders",
                                         "/login").permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(

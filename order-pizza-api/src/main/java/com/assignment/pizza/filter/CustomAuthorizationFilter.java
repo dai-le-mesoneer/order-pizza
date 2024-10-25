@@ -24,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -35,9 +36,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Log4j2
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+    private static final Pattern URI_PUBLIC_PATTERN = Pattern.compile("^/public/.*");
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (Constants.UN_AUTHENTICATION_PATH.contains(request.getServletPath())){
+        if (Constants.UN_AUTHENTICATION_PATH.contains(request.getServletPath()) ||
+                URI_PUBLIC_PATTERN.matcher(request.getServletPath()).matches()) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

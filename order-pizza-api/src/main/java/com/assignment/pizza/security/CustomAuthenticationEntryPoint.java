@@ -3,7 +3,6 @@ package com.assignment.pizza.security;
 import com.assignment.pizza.common.ErrorCode;
 import com.assignment.pizza.payload.response.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;

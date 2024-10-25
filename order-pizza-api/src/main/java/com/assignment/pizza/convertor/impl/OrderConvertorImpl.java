@@ -7,9 +7,9 @@ import com.assignment.pizza.domain.entity.ProductEntity;
 import com.assignment.pizza.domain.enums.OrderStatus;
 import com.assignment.pizza.domain.repository.OrderRepository;
 import com.assignment.pizza.domain.repository.ProductRepository;
-import com.assignment.pizza.payload.request.order.CreateOrderRequest;
-import com.assignment.pizza.payload.request.order.OrderItemRequest;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.CreateOrderRequest;
+import org.openapitools.model.OrderItemRequest;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;

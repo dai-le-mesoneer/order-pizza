@@ -1,6 +1,5 @@
 package com.assignment.pizza.service.impl;
 
-import com.assignment.pizza.common.ErrorCode;
 import com.assignment.pizza.convertor.OrderConvertor;
 import com.assignment.pizza.domain.entity.OrderEntity;
 import com.assignment.pizza.domain.enums.OrderStatus;
@@ -8,16 +7,10 @@ import com.assignment.pizza.domain.repository.OrderDetailRepository;
 import com.assignment.pizza.domain.repository.OrderRepository;
 import com.assignment.pizza.domain.repository.dsl.OrderDslRepository;
 import com.assignment.pizza.mapper.OrderMapper;
-import com.assignment.pizza.payload.request.order.CreateOrderRequest;
-import com.assignment.pizza.payload.request.order.ListOrderRequest;
-import com.assignment.pizza.payload.request.order.UpdateOrderStatusRequest;
-import com.assignment.pizza.payload.response.IdDTO;
-import com.assignment.pizza.payload.response.ListDTO;
-import com.assignment.pizza.payload.response.ResponseDTO;
-import com.assignment.pizza.payload.response.order.OrderDTO;
 import com.assignment.pizza.service.OrderService;
 import com.assignment.pizza.validator.OrderValidator;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -44,15 +37,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public ResponseDTO<IdDTO> createOrder(CreateOrderRequest createOrderRequest) {
+    public ResponseDTOIdDTO createOrder(CreateOrderRequest createOrderRequest) {
         var listError = orderValidator.validateCreateOrderRequest(createOrderRequest);
 
         if (!CollectionUtils.isEmpty(listError)) {
-            return ResponseDTO.<IdDTO>newBuilder()
-                    .setSuccess(false)
-                    .setCode(ErrorCode.BAD_REQUEST)
-                    .setErrors(listError)
-                    .build();
+            ResponseDTOIdDTO res = new ResponseDTOIdDTO();
+            res.setSuccess(false);
+            res.setCode(ResponseDTOIdDTO.CodeEnum.BAD_REQUEST);
+            res.setErrors(listError);
+            return res;
         }
 
         var order = orderConvertor.convertToEntity(createOrderRequest);
@@ -61,48 +54,52 @@ public class OrderServiceImpl implements OrderService {
         var orderDetails = orderConvertor.convertToListOrderDetails(createOrderRequest.getProducts(), savedOrder.getId());
         orderDetailRepository.saveAll(orderDetails);
 
-        return ResponseDTO.<IdDTO>newBuilder()
-                .setSuccess(true)
-                .setData(IdDTO.newBuilder()
-                        .setId(savedOrder.getId())
-                        .build())
-                .build();
+        ResponseDTOIdDTO res = new ResponseDTOIdDTO();
+        res.setSuccess(true);
+        IdDTO idDTO = new IdDTO();
+        idDTO.setId(savedOrder.getId());
+        res.setData(idDTO);
+        return res;
     }
 
     @Override
-    public ResponseDTO<ListDTO<OrderDTO>> listOrders(ListOrderRequest request) {
+    public ResponseDTOListDTOOrderDTO listOrders(ListOrderRequest request) {
         var orders = orderDslRepository.listOrders(request);
         if (orders.isEmpty()) {
-            return ResponseDTO.<ListDTO<OrderDTO>>newBuilder()
-                    .setSuccess(true)
-                    .setData(ListDTO.<OrderDTO>newBuilder()
-                            .setItems(List.of())
-                            .setTotalElement(0L)
-                            .build())
-                    .build();
+            ResponseDTOListDTOOrderDTO res = new ResponseDTOListDTOOrderDTO();
+            res.setSuccess(true);
+
+            ListDTOOrderDTO list = new ListDTOOrderDTO();
+            list.setItems(List.of());
+            list.setTotalElement(0L);
+            res.setData(list);
+            return res;
         }
         var orderIds = orders.stream().map(OrderEntity::getId).toList();
         var orderDetails = orderDetailRepository.findAllByOrderIdIn(orderIds);
 
         var orderMap = orderDetails.stream().collect(Collectors.groupingBy(o -> o.getOrder().getId()));
-        return ResponseDTO.<ListDTO<OrderDTO>>newBuilder()
-                .setSuccess(true)
-                .setData(ListDTO.<OrderDTO>newBuilder()
-                        .setTotalElement((long) orders.size())
-                        .setItems(orderMapper.mapAsList(orders, orderMap))
-                        .build())
-                .build();
+
+        ResponseDTOListDTOOrderDTO res = new ResponseDTOListDTOOrderDTO();
+        res.setSuccess(true);
+
+        ListDTOOrderDTO list = new ListDTOOrderDTO();
+        list.setTotalElement((long) orders.size());
+        list.setItems(orderMapper.mapAsList(orders, orderMap));
+        res.setData(list);
+
+        return res;
     }
 
     @Override
     @Transactional
-    public ResponseDTO<IdDTO> updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
+    public ResponseDTOIdDTO updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
         if (!OrderStatus.isValid(request.getStatus())) {
-            return ResponseDTO.<IdDTO>newBuilder()
-                    .setSuccess(false)
-                    .setCode(ErrorCode.BAD_REQUEST)
-                    .setMessage("Status invalid!")
-                    .build();
+            ResponseDTOIdDTO res = new ResponseDTOIdDTO();
+            res.setSuccess(false);
+            res.setCode(ResponseDTOIdDTO.CodeEnum.BAD_REQUEST);
+            res.setMessage("Status invalid!");
+            return res;
         }
 
         var order = orderRepository.findById(orderId).orElseThrow(() ->
@@ -110,11 +107,12 @@ public class OrderServiceImpl implements OrderService {
 
         order.setStatus(request.getStatus());
         orderRepository.save(order);
-        return ResponseDTO.<IdDTO>newBuilder()
-                .setSuccess(true)
-                .setData(IdDTO.newBuilder()
-                        .setId(orderId)
-                        .build())
-                .build();
+
+        ResponseDTOIdDTO res = new ResponseDTOIdDTO();
+        res.setSuccess(true);
+        IdDTO idDTO = new IdDTO();
+        idDTO.setId(orderId);
+        res.setData(idDTO);
+        return res;
     }
 }
