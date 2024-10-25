@@ -9,10 +9,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,11 +52,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if (!request.getMethod().equals("POST")) {
+        if (!request.getMethod().equals(HttpMethod.POST.name())) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            String username = request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY);
+            String password = request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
             return authenticationManager.authenticate(authToken);
         }

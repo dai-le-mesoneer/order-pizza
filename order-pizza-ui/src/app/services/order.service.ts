@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {OrderRequest} from '../components/card/order.request';
+import {OrderRequest} from '../request/order.request';
 import {Observable} from 'rxjs';
 import {ResponseDTO} from '../response/response';
 import {IDResponse} from '../response/id.response';

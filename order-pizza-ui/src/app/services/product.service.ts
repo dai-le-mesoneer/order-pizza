@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ResponseDTO} from '../response/response';
 import {List} from '../response/list';
-import {Product} from '../components/card/product';
+import {Product} from '../request/product';
 
 @Injectable({
   providedIn: 'root'
