@@ -64,8 +64,8 @@
   width: 90px;
   height: 90px;
   background-color: transparent;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background:
     linear-gradient(95deg, transparent 0%, transparent 8%, rgba(0, 0, 0, 0.07) 9%, transparent 50%, transparent 100%),
     linear-gradient(85deg, transparent 0%, transparent 19%, rgba(0, 0, 0, 0.05) 20%, rgba(0, 0, 0, 0.07) 91%, transparent 92%, transparent 100%);
