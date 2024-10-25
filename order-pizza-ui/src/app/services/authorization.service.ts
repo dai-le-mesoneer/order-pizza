@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {UserResponse} from '../response/user.response';
 import {Role} from '../enums/role.enum';
+import {ACCESS_TOKEN, CURRENT_USER} from '../common/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +9,20 @@ import {Role} from '../enums/role.enum';
 export class AuthorizationService {
   hasRole(roles: string[]): boolean {
     if (this.isAuthenticated()) {
-      let currentUser: UserResponse = JSON.parse(<string>localStorage.getItem('current_user'));
+      let currentUser: UserResponse = JSON.parse(<string>localStorage.getItem(CURRENT_USER));
       return roles.includes(currentUser.role)
     }
     return false;
   }
 
   isAuthenticated(): boolean {
-    let user: string | null = localStorage.getItem('current_user');
+    let user: string | null = localStorage.getItem(CURRENT_USER);
     return user != null;
 
   }
 
   getToken(): string | null {
-    return localStorage.getItem("access_token");
+    return localStorage.getItem(ACCESS_TOKEN);
   }
 
   isReceptionist(): boolean {

@@ -9,15 +9,18 @@ import {
   MatTable
 } from '@angular/material/table';
 import {MatButton} from '@angular/material/button';
-import {OrderDTO} from '../response/order.response';
+import {OrderDTO} from '../../response/order.response';
 import {NgForOf} from '@angular/common';
-import {OrderService} from '../services/order.service';
-import {AuthorizationDirective} from '../directives/authorization.directive';
-import {AuthorizationService} from '../services/authorization.service';
-import {ListOrdersRequest} from '../request/list-orders.request';
-import {OrderStatus} from '../enums/order-status.enum';
-import {Role} from '../enums/role.enum';
+import {OrderService} from '../../services/order.service';
+import {AuthorizationDirective} from '../../directives/authorization.directive';
+import {AuthorizationService} from '../../services/authorization.service';
+import {OrderStatus} from '../../enums/order-status.enum';
+import {Role} from '../../enums/role.enum';
 import {Router} from '@angular/router';
+import {MatFormField} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime} from 'rxjs';
 
 @Component({
   selector: 'app-list-orders',
@@ -35,7 +38,10 @@ import {Router} from '@angular/router';
     MatRow,
     MatButton,
     NgForOf,
-    AuthorizationDirective
+    AuthorizationDirective,
+    MatFormField,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   templateUrl: './list-orders.component.html',
   styleUrl: './list-orders.component.css'
@@ -43,12 +49,21 @@ import {Router} from '@angular/router';
 export class ListOrdersComponent implements OnInit{
   displayedColumns: string[] = ['orderId', 'createdDate', 'items', 'name', "phoneNumber", "price", "actions"];
   dataSource!: OrderDTO[];
+  searchTerm: FormControl = new FormControl('');
 
   constructor(
     private orderService: OrderService,
     private authorizationService: AuthorizationService,
     private router: Router,
-  ) { }
+  ) {
+    this.searchTerm.valueChanges
+      .pipe(
+        debounceTime(400)
+      )
+      .subscribe(_ => {
+        this.loadOrder()
+      })
+  }
 
   confirm(element: OrderDTO) {
     this.orderService.changeOrderStatus(element.orderId, OrderStatus.CONFIRMED).subscribe(
@@ -97,23 +112,8 @@ export class ListOrdersComponent implements OnInit{
     )
   }
 
-  private createListOrderRequest(): ListOrdersRequest {
-    const status = this.getOrderStatus();
-    return { status: status };
-  }
-
-  private getOrderStatus(): OrderStatus {
-    if (this.authorizationService.isReceptionist()) {
-      return OrderStatus.PENDING;
-    }
-    if (this.authorizationService.isChef()) {
-      return OrderStatus.CONFIRMED;
-    }
-    return OrderStatus.COMPLETED; // Default case
-  }
-
   private loadOrder(): void {
-    this.orderService.listOrders(this.createListOrderRequest()).subscribe(
+    this.orderService.listOrders({searchTerm: this.searchTerm.value}).subscribe(
       response => {
         if (response.success) {
           this.dataSource = response.data.items;

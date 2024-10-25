@@ -3,14 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ResponseDTO} from '../response/response';
 import {List} from '../response/list';
-import {Product} from '../card/product';
+import {Product} from '../components/card/product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-    private apiUrl = 'http://localhost:8080/products';
+    private apiUrl = 'http://localhost:8080/public/products';
 
     constructor(private http: HttpClient) { }
 

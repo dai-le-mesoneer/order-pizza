@@ -4,9 +4,10 @@ import {MatFormField} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {LoginRequest} from '../request/login.request';
-import {AuthenticationService} from '../services/authentication.service';
+import {LoginRequest} from '../../request/login.request';
+import {AuthenticationService} from '../../services/authentication.service';
 import {Router} from '@angular/router';
+import {ACCESS_TOKEN, CURRENT_USER, ROLE} from '../../common/constants';
 
 @Component({
   selector: 'app-login',
@@ -48,17 +49,17 @@ export class LoginComponent implements OnInit{
       password : this.loginForm.controls.password.value || ''
     }
 
-    this.authenticationService.login(request).subscribe(
-      result => {
-        console.log(result);
+
+    this.authenticationService.login(request).subscribe({
+      next: result => {
         if (result.success && result.data) {
-          localStorage.setItem('current_user', JSON.stringify(result.data));
-          localStorage.setItem('access_token', result.data.accessToken)
-          localStorage.setItem('role', result.data.role)
+          localStorage.setItem(CURRENT_USER, JSON.stringify(result.data));
+          localStorage.setItem(ACCESS_TOKEN, result.data.accessToken)
+          localStorage.setItem(ROLE, result.data.role)
           this.router.navigate(['orders']).then(_ => {});
         }
       },
-      error => {
+      error: error => {
         if (error.status === 401) {
           this.showError.set(true)
           this.loginForm.reset();
@@ -66,7 +67,7 @@ export class LoginComponent implements OnInit{
           console.error('An unexpected error occurred.');
         }
       }
-    )
+    })
   }
 
   handleFocus(): void {

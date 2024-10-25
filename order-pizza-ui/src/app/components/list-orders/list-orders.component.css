@@ -5,3 +5,7 @@ table {
 .list-order-title {
   text-align: center;
 }
+
+.list-order-search {
+  width: 300px
+}

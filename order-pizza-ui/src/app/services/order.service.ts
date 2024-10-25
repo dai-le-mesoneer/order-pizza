@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {OrderRequest} from '../card/order.request';
+import {OrderRequest} from '../components/card/order.request';
 import {Observable} from 'rxjs';
 import {ResponseDTO} from '../response/response';
 import {IDResponse} from '../response/id.response';
@@ -18,7 +18,7 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   createOrder(request: OrderRequest): Observable<ResponseDTO<IDResponse>> {
-    return this.http.post<ResponseDTO<IDResponse>>(this.apiUrl, request);
+    return this.http.post<ResponseDTO<IDResponse>>("http://localhost:8080/public/orders", request);
   }
 
   listOrders(request: ListOrdersRequest): Observable<ResponseDTO<List<OrderDTO>>> {
