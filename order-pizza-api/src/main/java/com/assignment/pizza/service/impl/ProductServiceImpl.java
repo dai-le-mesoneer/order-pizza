@@ -1,14 +1,12 @@
 package com.assignment.pizza.service.impl;
 
-import com.assignment.pizza.domain.repository.ProductRepository;
 import com.assignment.pizza.domain.repository.dsl.ProductDslRepository;
 import com.assignment.pizza.mapper.ProductMapper;
-import com.assignment.pizza.payload.request.product.ListProductRequest;
-import com.assignment.pizza.payload.response.ListDTO;
-import com.assignment.pizza.payload.response.ResponseDTO;
-import com.assignment.pizza.payload.response.product.ProductDTO;
 import com.assignment.pizza.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.ListDTOProductDTO;
+import org.openapitools.model.ListProductRequest;
+import org.openapitools.model.ResponseDTOListDTOProductDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,19 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
     private final ProductDslRepository productDslRepository;
     private final ProductMapper productMapper;
 
     @Override
-    public ResponseDTO<ListDTO<ProductDTO>> listProducts(ListProductRequest request) {
+    public ResponseDTOListDTOProductDTO listProducts(ListProductRequest request) {
         var listProducts = productDslRepository.listAllProducts(request);
-        return ResponseDTO.<ListDTO<ProductDTO>>newBuilder()
-                .setSuccess(true)
-                .setData(ListDTO.<ProductDTO>newBuilder()
-                        .setItems(productMapper.mapAsList(listProducts))
-                        .setTotalElement((long) listProducts.size())
-                        .build())
-                .build();
+
+        ResponseDTOListDTOProductDTO response = new ResponseDTOListDTOProductDTO();
+        response.setSuccess(true);
+        ListDTOProductDTO listProductDTO = new ListDTOProductDTO();
+        listProductDTO.setItems(productMapper.mapAsList(listProducts));
+        listProductDTO.setTotalElement((long) listProducts.size());
+        response.setData(listProductDTO);
+        return response;
     }
 }

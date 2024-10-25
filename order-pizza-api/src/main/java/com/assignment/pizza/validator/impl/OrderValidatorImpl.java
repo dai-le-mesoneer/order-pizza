@@ -1,13 +1,13 @@
 package com.assignment.pizza.validator.impl;
 
 import com.assignment.pizza.common.ErrorCode;
-import com.assignment.pizza.payload.request.order.CreateOrderRequest;
-import com.assignment.pizza.payload.request.order.OrderItemRequest;
-import com.assignment.pizza.payload.response.ErrorDTO;
 import com.assignment.pizza.utils.CommonUtils;
 import com.assignment.pizza.utils.ErrorUtils;
 import com.assignment.pizza.validator.OrderValidator;
 import org.apache.commons.lang3.StringUtils;
+import org.openapitools.model.CreateOrderRequest;
+import org.openapitools.model.ErrorDTO;
+import org.openapitools.model.OrderItemRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

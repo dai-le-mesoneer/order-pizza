@@ -1,8 +1,8 @@
 package com.assignment.pizza.utils;
 
-import com.assignment.pizza.payload.response.ErrorDTO;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.openapitools.model.ErrorDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +20,10 @@ public class ErrorUtils {
     }
 
     public static <T extends Enum<T>> ErrorDTO createErrorDTO(String key, T code) {
-        return ErrorDTO.of(key, code);
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setCode(code.name());
+        errorDTO.setKey(key);
+        return errorDTO;
     }
 
-    public static <T extends Enum<T>> ErrorDTO createErrorDTO(String key, T code, String message) {
-        return ErrorDTO.of(key, code, message);
-    }
 }

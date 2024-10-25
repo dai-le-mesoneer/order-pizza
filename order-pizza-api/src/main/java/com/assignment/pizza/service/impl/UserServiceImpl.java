@@ -1,35 +1,31 @@
 package com.assignment.pizza.service.impl;
 
-import com.assignment.pizza.common.ErrorCode;
-import com.assignment.pizza.common.Mock;
-import com.assignment.pizza.domain.dto.UserDTO;
-import com.assignment.pizza.payload.request.auth.LoginRequest;
-import com.assignment.pizza.payload.response.ResponseDTO;
+import com.assignment.pizza.domain.repository.UserRepository;
 import com.assignment.pizza.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author dai.le
  * @since 22/10/2024
  */
 @Service
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository userRepository;
 
     @Override
-    public ResponseDTO<UserDTO> login(LoginRequest request) {
-        var user = Mock.MOCK_USERS.stream()
-                .filter(u -> u.getUsername().equals(request.getUsername()))
-                .findFirst();
-
-        if (user.isPresent() && user.get().getPassword().equals(request.getPassword())) {
-            return ResponseDTO.<UserDTO>newBuilder()
-                    .setSuccess(true)
-                    .setData(user.get())
-                    .build();
-        }
-        return ResponseDTO.<UserDTO>newBuilder()
-                .setCode(ErrorCode.INVALID)
-                .setSuccess(true)
-                .build();
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalStateException("User not found"));
+        return new User(username, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().getRole())));
     }
 }

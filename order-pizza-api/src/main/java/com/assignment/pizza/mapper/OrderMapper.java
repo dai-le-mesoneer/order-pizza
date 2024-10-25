@@ -2,9 +2,9 @@ package com.assignment.pizza.mapper;
 
 import com.assignment.pizza.domain.entity.OrderDetailsEntity;
 import com.assignment.pizza.domain.entity.OrderEntity;
-import com.assignment.pizza.payload.response.order.OrderDTO;
 import com.assignment.pizza.utils.DatetimeUtils;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.OrderDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,14 +22,14 @@ public class OrderMapper extends BaseMapper<OrderEntity, OrderDTO> {
 
     @Override
     public OrderDTO map(OrderEntity input) {
-        return OrderDTO.newBuilder()
-                .setOrderId(input.getId())
-                .setName(input.getCustomerName())
-                .setPhoneNumber(input.getPhoneNumber())
-                .setStatus(input.getStatus())
-                .setAddress(input.getDeliverTo())
-                .setCreatedDate(DatetimeUtils.timestampToStringWithDefaultZone(input.getCreatedDate()))
-                .build();
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderId(input.getId());
+        orderDTO.setAddress(input.getDeliverTo());
+        orderDTO.setCreatedDate(DatetimeUtils.timestampToStringWithDefaultZone(input.getCreatedDate()));
+        orderDTO.setPhoneNumber(input.getPhoneNumber());
+        orderDTO.setName(input.getCustomerName());
+        orderDTO.setStatus(input.getStatus());
+        return orderDTO;
     }
 
     public List<OrderDTO> mapAsList(List<OrderEntity> orderEntities, Map<Long, List<OrderDetailsEntity>> orderDetailMap) {

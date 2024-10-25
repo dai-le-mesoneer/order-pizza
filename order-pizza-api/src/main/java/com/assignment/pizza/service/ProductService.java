@@ -1,14 +1,13 @@
 package com.assignment.pizza.service;
 
-import com.assignment.pizza.payload.request.product.ListProductRequest;
-import com.assignment.pizza.payload.response.ListDTO;
-import com.assignment.pizza.payload.response.ResponseDTO;
-import com.assignment.pizza.payload.response.product.ProductDTO;
+
+import org.openapitools.model.ListProductRequest;
+import org.openapitools.model.ResponseDTOListDTOProductDTO;
 
 /**
  * @author dai-le-mesoneer
  * @since 10/18/24
  */
 public interface ProductService {
-    ResponseDTO<ListDTO<ProductDTO>> listProducts(ListProductRequest request);
+    ResponseDTOListDTOProductDTO listProducts(ListProductRequest request);
 }

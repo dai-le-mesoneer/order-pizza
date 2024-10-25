@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /orders/{id}:
+    put:
+      tags:
+        - Order APIs
+      summary: Update order status
+      description: Update order status
+      operationId: updateOrderStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderStatusRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ResponseDTOIdDTO"
+  /public/orders:
+    post:
+      tags:
+        - Order APIs
+      summary: Create order API. Public API
+      description: Create order
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ResponseDTOIdDTO"
+  /public/products:
+    get:
+      tags:
+        - Product APIs
+      summary: List all product. Public API
+      description: List all product. Public API
+      operationId: getAllProduct
+      parameters:
+        - name: rq
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/ListProductRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ResponseDTOListDTOProductDTO"
+  /orders:
+    get:
+      tags:
+        - Order APIs
+      summary: List order API
+      description: List order
+      operationId: listOrders
+      parameters:
+        - name: rq
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/ListOrderRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: "#/components/schemas/ResponseDTOListDTOOrderDTO"
+components:
+  schemas:
+    UpdateOrderStatusRequest:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+    ErrorDTO:
+      type: object
+      properties:
+        key:
+          type: string
+        code:
+          type: string
+        value:
+          type: string
+    IdDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    ResponseDTOIdDTO:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/IdDTO"
+        code:
+          type: string
+          enum:
+            - BAD_REQUEST
+            - REQUIRED
+            - INVALID
+            - AUTHENTICATION_FAILURE
+            - TOKEN_EXPIRED
+            - ACCESS_DENIED
+            - UNAUTHORIZED
+            - NOT_EMPTY
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorDTO"
+    CreateOrderRequest:
+      type: object
+      properties:
+        customerName:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItemRequest"
+    OrderItemRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          format: int32
+    ListProductRequest:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        sort:
+          type: string
+        direction:
+          type: string
+        ignorePage:
+          type: boolean
+        type:
+          type: string
+    ListDTOProductDTO:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductDTO"
+        totalElement:
+          type: integer
+          format: int64
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        type:
+          type: string
+        price:
+          type: integer
+          format: int64
+        image:
+          type: string
+    ResponseDTOListDTOProductDTO:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/ListDTOProductDTO"
+        code:
+          type: string
+          enum:
+            - BAD_REQUEST
+            - REQUIRED
+            - INVALID
+            - AUTHENTICATION_FAILURE
+            - TOKEN_EXPIRED
+            - ACCESS_DENIED
+            - UNAUTHORIZED
+            - NOT_EMPTY
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorDTO"
+    ListOrderRequest:
+      type: object
+      properties:
+        searchTerm:
+          type: string
+          description: query search with customer name
+    ListDTOOrderDTO:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderDTO"
+        totalElement:
+          type: integer
+          format: int64
+    OrderDTO:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        createdDate:
+          type: string
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        price:
+          type: integer
+          format: int64
+        status:
+          type: integer
+          format: int32
+        address:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItemDTO"
+    OrderItemDTO:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    ResponseDTOListDTOOrderDTO:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/ListDTOOrderDTO"
+        code:
+          type: string
+          enum:
+            - BAD_REQUEST
+            - REQUIRED
+            - INVALID
+            - AUTHENTICATION_FAILURE
+            - TOKEN_EXPIRED
+            - ACCESS_DENIED
+            - UNAUTHORIZED
+            - NOT_EMPTY
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorDTO"

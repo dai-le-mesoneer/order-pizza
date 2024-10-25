@@ -1,7 +1,7 @@
 package com.assignment.pizza.mapper;
 
 import com.assignment.pizza.domain.entity.OrderDetailsEntity;
-import com.assignment.pizza.payload.response.order.OrderItemDTO;
+import org.openapitools.model.OrderItemDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 public class OrderDetailMapper extends BaseMapper<OrderDetailsEntity, OrderItemDTO> {
     @Override
     public OrderItemDTO map(OrderDetailsEntity input) {
-        return OrderItemDTO.newBuilder()
-                .setProductId(input.getProduct().getId())
-                .setProductName(input.getProduct().getName())
-                .setQuantity(input.getQuantity())
-                .build();
+        OrderItemDTO itemDTO = new OrderItemDTO();
+        itemDTO.setProductId(input.getProduct().getId());
+        itemDTO.setProductName(input.getProduct().getName());
+        itemDTO.setQuantity(input.getQuantity());
+        return itemDTO;
     }
 }

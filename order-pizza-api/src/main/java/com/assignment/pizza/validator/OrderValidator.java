@@ -1,7 +1,7 @@
 package com.assignment.pizza.validator;
 
-import com.assignment.pizza.payload.request.order.CreateOrderRequest;
-import com.assignment.pizza.payload.response.ErrorDTO;
+import org.openapitools.model.CreateOrderRequest;
+import org.openapitools.model.ErrorDTO;
 
 import java.util.List;
 

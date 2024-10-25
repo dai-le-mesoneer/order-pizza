@@ -2,8 +2,8 @@ package com.assignment.pizza.convertor;
 
 import com.assignment.pizza.domain.entity.OrderDetailsEntity;
 import com.assignment.pizza.domain.entity.OrderEntity;
-import com.assignment.pizza.payload.request.order.CreateOrderRequest;
-import com.assignment.pizza.payload.request.order.OrderItemRequest;
+import org.openapitools.model.CreateOrderRequest;
+import org.openapitools.model.OrderItemRequest;
 
 import java.util.List;
 

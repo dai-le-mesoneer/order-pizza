@@ -2,7 +2,7 @@ package com.assignment.pizza.mapper;
 
 import com.assignment.pizza.common.ProductType;
 import com.assignment.pizza.domain.entity.ProductEntity;
-import com.assignment.pizza.payload.response.product.ProductDTO;
+import org.openapitools.model.ProductDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 public class ProductMapper extends BaseMapper<ProductEntity, ProductDTO> {
     @Override
     public ProductDTO map(ProductEntity input) {
-        return ProductDTO.newBuilder()
-                .setId(input.getId())
-                .setImage(input.getImage())
-                .setName(input.getName())
-                .setPrice(input.getPrice())
-                .setType(ProductType.of(input.getType()).getName())
-                .build();
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName(input.getName());
+        productDTO.setId(input.getId());
+        productDTO.setImage(input.getImage());
+        productDTO.setPrice(input.getPrice());
+        productDTO.setType(ProductType.of(input.getType()).getName());
+        return productDTO;
     }
 }
