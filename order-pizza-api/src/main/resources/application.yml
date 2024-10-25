@@ -2,11 +2,11 @@ spring:
   application:
     name: order-pizza-api
   datasource:
-    url: jdbc:postgresql://localhost:5432/OrderPizza
-    username: postgres
-    password: 123456
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     hikari:
-      schema: orderpizza
+      schema: ${DB_SCHEMA}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,11 +14,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: orderpizza
+        default_schema: ${DB_SCHEMA}
     show-sql: true
     open-in-view: true
   flyway:
-    enabled: false
+    enabled: true # enables flyway database migration
+    locations: classpath:db/migration # the location where flyway should look for migration scripts
+    validate-on-migrate: true
+    default-schema: ${DB_SCHEMA}
 logging:
   level:
     root: info
