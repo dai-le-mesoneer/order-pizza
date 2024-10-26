@@ -57,6 +57,8 @@ You can access application with link: [Click me](http://localhost:4200)
 - Git
 - Intellij IDEA Ultimate
 
+### Steps to Deploy
+
 #### 1. Clone the Repository
 
 Clone the repository to your local machine:
