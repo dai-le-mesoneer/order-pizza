@@ -85,10 +85,15 @@ mvn clean install
 
 #### 4. Run Spring Boot Application
 
-Provide enviroment variable (*replace with your credential database*)
+Provide enviroment variable (*can update file **application.properties** or past to env option in Intelliji IDEA & replace with your credential database*)
 
 ```properties
-DB_HOST=localhost;DB_NAME=OrderPizza;DB_PASSWORD=123456;DB_PORT=5432;DB_SCHEMA=orderpizza;DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=OrderPizza
+DB_PASSWORD=123456
+DB_PORT=5432
+DB_SCHEMA=orderpizza
+DB_USER=postgres
 ```
 
 Run Application with **Intellij IDEA Ultimate**
