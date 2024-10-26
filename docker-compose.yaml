@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16.4
+    restart: unless-stopped
+    container_name: pizza-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./order-pizza-api/db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+  be:
+    image: anhdai0801/order-pizza-api:latest
+    container_name: order-pizza-api
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: pizza-database
+      DB_PORT: 5432
+      DB_NAME: OrderPizza
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_SCHEMA: orderpizza
+    depends_on:
+      db:
+        condition: service_started
+  fe:
+    image: anhdai0801/order-pizza-ui:latest
+    container_name: order-pizza-ui
+    ports:
+      - "4200:80"
+volumes:
+  db:
+    driver: local

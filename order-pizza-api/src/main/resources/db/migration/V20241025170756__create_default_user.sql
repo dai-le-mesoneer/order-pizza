@@ -1,0 +1,3 @@
+insert into users(user_name, password, role_id, first_name, last_name) values ('chef', '$2a$10$ciSd5NO/YSBLaM6pqPi98.yzUBDlX03w2YOehuGKstBTCUSg.bM7.', (select id from roles where role = 'CHEF'), '', '');
+insert into users(user_name, password, role_id, first_name, last_name) values ('receptionist', '$2a$10$ciSd5NO/YSBLaM6pqPi98.yzUBDlX03w2YOehuGKstBTCUSg.bM7.', (select id from roles where role = 'RECEPTIONIST'), '', '');
+insert into users(user_name, password, role_id, first_name, last_name) values ('delivery', '$2a$10$ciSd5NO/YSBLaM6pqPi98.yzUBDlX03w2YOehuGKstBTCUSg.bM7.', (select id from roles where role = 'DELIVERY'), '', '');
