@@ -7,6 +7,12 @@ The Order Pizza Application is wrote by Spring Boot and Angular with some basic 
 - View list order
 - Change order status
 
+## Account
+
+- RECEPTIONIST: receptionist/123456
+- CHEF: chef/123456
+- DELIVERY: delivery/123456
+
 This guide provides step-by-step instructions on how to deploy a **The Order Pizza Application**
 
 ## Option 1: Deploy with Docker
